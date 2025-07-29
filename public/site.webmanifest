@@ -1,7 +1,7 @@
 {
   "name": "AIM3 - Aceleradores de Negócios",
   "short_name": "AIM3",
-  "description": "Mais que marketing, somos aceleradores de negócios. Soluções criativas, tecnológicas e orientadas por dados para escalar sua marca com inteligência artificial.",
+  "description": "Mais que uma agência, somos aceleradores de negócios. Transformamos ideias em resultados através de tecnologia, estratégia e inteligência artificial.",
   "icons": [
     {
       "src": "/favicon-192x192.png",
@@ -14,8 +14,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#10b981",
-  "background_color": "#000000",
+  "theme_color": "#1dc997",
+  "background_color": "#0a0a0a",
   "display": "standalone",
   "start_url": "/",
   "scope": "/"

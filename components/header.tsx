@@ -45,6 +45,10 @@ export default function Header() {
     { label: "Contato", href: "#contato" },
   ]
 
+  const handleCTAClick = () => {
+    window.open("http://wa.me/556136861323?text=Olá! Quero impulsionar meu negócio com a AIM3!", "_blank")
+  }
+
   // Mobile-optimized animations
   const mobileVariants = {
     hidden: { opacity: 0, y: -20 },
@@ -111,7 +115,8 @@ export default function Header() {
 
           {/* CTA Button Desktop */}
           <motion.button
-            className="hidden md:flex items-center gap-3 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-6 py-3 rounded-xl font-semibold hover:from-[#16a085] hover:to-[#1dc997] transition-all duration-300 group"
+            onClick={handleCTAClick}
+            className="hidden md:flex items-center gap-3 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-6 py-3 rounded-xl font-semibold hover:from-[#16a085] hover:to-[#1dc997] transition-all duration-300 group cursor-pointer"
             style={{
               boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",
             }}
@@ -189,14 +194,17 @@ export default function Header() {
                   ))}
 
                   <motion.button
-                    className="mt-8 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3"
+                    onClick={() => {
+                      handleCTAClick()
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className="mt-8 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3 cursor-pointer"
                     style={{
                       boxShadow: "0 0 30px rgba(29, 201, 151, 0.4)",
                     }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2, delay: 0.3 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Quero Impulsionar Meu Negócio
                     <ArrowRight className="w-5 h-5" />

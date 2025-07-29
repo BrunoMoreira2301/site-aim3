@@ -36,6 +36,10 @@ export default function LunaSection() {
     "Coaches e Mentores",
   ]
 
+  const handleLunaClick = () => {
+    window.open("http://wa.me/556136861323?text=Olá! Quero conhecer mais sobre a Luna AI!", "_blank")
+  }
+
   return (
     <section className="py-20 relative overflow-hidden">
       {/* Animated Background */}
@@ -185,7 +189,8 @@ export default function LunaSection() {
                 tempo de atendimento.
               </p>
               <motion.button
-                className="bg-[#1dc997] text-[#0a0a0a] px-8 py-3 rounded-lg font-bold hover:bg-[#1dc997]/90 transition-colors"
+                onClick={handleLunaClick}
+                className="bg-[#1dc997] text-[#0a0a0a] px-8 py-3 rounded-lg font-bold hover:bg-[#1dc997]/90 transition-colors cursor-pointer"
                 style={{
                   boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",
                 }}

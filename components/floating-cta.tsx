@@ -27,6 +27,10 @@ export default function FloatingCTA() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const handleWhatsAppClick = () => {
+    window.open("http://wa.me/556136861323?text=Olá! Quero transformar meu negócio com a AIM3!", "_blank")
+  }
+
   if (!isMobile) return null
 
   return (
@@ -65,6 +69,7 @@ export default function FloatingCTA() {
                   Pronto para transformar seu negócio? Nossa equipe está online agora!
                 </p>
                 <button
+                  onClick={handleWhatsAppClick}
                   className="w-full bg-[#1dc997] text-[#0a0a0a] py-3 rounded-xl font-bold text-sm hover:bg-[#1dc997]/90 transition-colors"
                   style={{
                     boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",

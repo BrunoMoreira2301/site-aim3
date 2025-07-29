@@ -19,6 +19,10 @@ export default function HeroSection() {
     visible: { opacity: 1, y: 0 },
   }
 
+  const handleCTAClick = () => {
+    window.open("http://wa.me/556136861323?text=Olá! Quero falar com um especialista da AIM3!", "_blank")
+  }
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated Background */}
@@ -104,7 +108,8 @@ export default function HeroSection() {
 
           {/* CTA Button */}
           <motion.button
-            className="group bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold text-base md:text-lg inline-flex items-center gap-3 hover:from-[#16a085] hover:to-[#1dc997] transition-all duration-300"
+            onClick={handleCTAClick}
+            className="group bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-6 md:px-8 py-3 md:py-4 rounded-lg font-bold text-base md:text-lg inline-flex items-center gap-3 hover:from-[#16a085] hover:to-[#1dc997] transition-all duration-300 cursor-pointer"
             style={{
               boxShadow: "0 0 30px rgba(29, 201, 151, 0.4)",
             }}

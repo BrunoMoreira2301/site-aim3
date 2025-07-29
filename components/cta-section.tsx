@@ -5,6 +5,10 @@ import { ArrowRight, Sparkles } from "lucide-react"
 import AnimatedBackground from "@/components/animated-background"
 
 export default function CTASection() {
+  const handleCTAClick = () => {
+    window.open("http://wa.me/556136861323?text=Olá! Vamos levar minha marca pro próximo nível!", "_blank")
+  }
+
   return (
     <section className="py-20 relative overflow-hidden">
       {/* Animated Background */}
@@ -84,7 +88,8 @@ export default function CTASection() {
 
           {/* CTA Button */}
           <motion.button
-            className="group bg-[#1dc997] text-[#0a0a0a] px-12 py-6 rounded-2xl font-bold text-xl inline-flex items-center gap-4 hover:bg-[#1dc997]/90 transition-all duration-300"
+            onClick={handleCTAClick}
+            className="group bg-[#1dc997] text-[#0a0a0a] px-12 py-6 rounded-2xl font-bold text-xl inline-flex items-center gap-4 hover:bg-[#1dc997]/90 transition-all duration-300 cursor-pointer"
             style={{
               boxShadow: "0 0 40px rgba(29, 201, 151, 0.5)",
             }}

@@ -9,12 +9,12 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: <Instagram className="w-6 h-6" />,
-      href: "#",
+      href: "https://www.instagram.com/agencia.aim3/",
       label: "Instagram",
     },
     {
       icon: <Linkedin className="w-6 h-6" />,
-      href: "#",
+      href: "https://www.linkedin.com/company/aim3-marketing-e-tech/",
       label: "LinkedIn",
     },
     {
@@ -42,7 +42,7 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-6">
               <div className="relative w-40 h-10">
                 <Image
-                  src="https://i.postimg.cc/rpF4KFsm/Logo-AIM3-Verde-2.png"
+                  src="/images/logo-aim3.png"
                   alt="AIM3 Logo"
                   fill
                   className="object-contain brightness-110 text-white mx-[-23px]"
@@ -63,6 +63,8 @@ export default function Footer() {
                 <motion.a
                   key={index}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 bg-[#383745]/30 rounded-xl flex items-center justify-center text-[#dcdbde] hover:text-[#1dc997] hover:bg-[#1dc997]/20 transition-all duration-300"
                   style={{
                     boxShadow: "0 0 10px rgba(29, 201, 151, 0.1)",
@@ -106,8 +108,13 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-[#dcdbde] text-sm">WhatsApp</p>
-                  <a href="https://wa.me/5561993418883" className="text-white hover:text-[#1dc997] transition-colors">
-                    (61) 99341-8883
+                  <a
+                    href="http://wa.me/556136861323"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white hover:text-[#1dc997] transition-colors"
+                  >
+                    (61) 3686-1323
                   </a>
                 </div>
               </div>
