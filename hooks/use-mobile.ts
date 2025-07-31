@@ -20,3 +20,9 @@ export function useMobile() {
 
   return { isMobile, isTablet, isDesktop: !isMobile && !isTablet }
 }
+
+// Export adicional para compatibilidade
+export function useIsMobile() {
+  const { isMobile } = useMobile()
+  return isMobile
+}

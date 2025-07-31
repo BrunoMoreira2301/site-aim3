@@ -1,210 +1,193 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Calendar, ShoppingCart, Headphones, Zap, Clock, Star } from "lucide-react"
-import AnimatedBackground from "@/components/animated-background"
+import { Button } from "@/components/ui/button"
+import { Bot, MessageSquare, Zap, Shield, ArrowRight } from "lucide-react"
+import AnimatedBackground from "./animated-background"
+import { useMobile } from "@/hooks/use-mobile"
 
 export default function LunaSection() {
+  const isMobile = useMobile()
+
   const features = [
     {
-      icon: <Calendar className="w-6 h-6" />,
-      title: "Agendamentos Inteligentes",
-      description: "Sistema automatizado de agendamento com confirmações e lembretes",
+      icon: MessageSquare,
+      title: "Conversas Naturais",
+      description: "Interface intuitiva que entende contexto e nuances da comunicação humana",
     },
     {
-      icon: <ShoppingCart className="w-6 h-6" />,
-      title: "Vendas com IA",
-      description: "Assistente de vendas que qualifica leads e fecha negócios",
+      icon: Zap,
+      title: "Respostas Instantâneas",
+      description: "Processamento em tempo real com latência ultra-baixa para experiência fluida",
     },
     {
-      icon: <Headphones className="w-6 h-6" />,
-      title: "Suporte 24/7",
-      description: "Atendimento inteligente que nunca para de funcionar",
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Integrações Completas",
-      description: "Conecta com CRMs, APIs e todos os seus sistemas existentes",
+      icon: Shield,
+      title: "Segurança Avançada",
+      description: "Criptografia de ponta a ponta e conformidade com LGPD e regulamentações internacionais",
     },
   ]
 
-  const useCases = [
-    "Psicologia e Terapia",
-    "Clínicas de Estética",
-    "Consultórios Médicos",
-    "Infoprodutores",
-    "Coaches e Mentores",
-  ]
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: isMobile ? 0.6 : 0.8,
+        staggerChildren: isMobile ? 0.06 : 0.1,
+      },
+    },
+  }
 
-  const handleLunaClick = () => {
-    window.open("http://wa.me/556136861323?text=Olá! Quero conhecer mais sobre a Luna AI!", "_blank")
+  const itemVariants = {
+    hidden: { opacity: 0, y: isMobile ? 15 : 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: isMobile ? 0.6 : 0.8,
+        ease: "easeOut",
+      },
+    },
   }
 
   return (
-    <section className="py-20 relative overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedBackground variant="waves" />
-
-      {/* Luna Glow Background */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#1dc997]/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-[#1dc997]/5 rounded-full blur-2xl" />
-      </div>
+    <section id="luna" className="relative py-20 bg-[#0a0a0a] overflow-hidden">
+      <AnimatedBackground variant="luna" />
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: isMobile ? "-10px" : "-20px" }}
           className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
         >
-          <div className="inline-flex items-center gap-2 bg-[#1dc997]/20 border border-[#1dc997]/30 rounded-full px-6 py-3 mb-8">
-            <Star className="w-5 h-5 text-[#1dc997]" />
-            <span className="text-[#1dc997] font-semibold">Exclusivo AIM3</span>
-          </div>
+          <motion.div variants={itemVariants} className="mb-6">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-[#1dc997]/10 border border-[#1dc997]/20 text-[#1dc997] text-sm font-medium">
+              <Bot className="w-4 h-4 mr-2" />
+              Assistente IA Avançada
+            </span>
+          </motion.div>
 
-          <h2
-            className="text-5xl md:text-7xl font-bold mb-6"
-            style={{
-              background: "linear-gradient(135deg, #1dc997 0%, #ffffff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textShadow: "0 0 40px rgba(29, 201, 151, 0.5)",
-            }}
-          >
-            Luna AI System
-          </h2>
-          <p className="text-xl text-[#dcdbde] max-w-3xl mx-auto mb-8">
-            O sistema de inteligência artificial mais avançado do mercado, criado pela AIM3 para revolucionar a forma
-            como você atende e vende.
-          </p>
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Conheça a{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1dc997] to-[#16a085]">Luna AI</span>
+          </motion.h2>
+
+          <motion.p variants={itemVariants} className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Nossa assistente de IA mais avançada, projetada para revolucionar a forma como sua empresa interage com
+            clientes, processa informações e toma decisões estratégicas.
+          </motion.p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Features */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: isMobile ? "-10px" : "-20px" }}
+            className="space-y-8"
           >
-            <h3 className="text-3xl font-bold text-white mb-8">
-              Funcionalidades que <span className="text-[#1dc997]">Transformam</span>
-            </h3>
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="flex items-start space-x-4 p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#1dc997]/30 transition-all duration-300 hover:bg-white/10"
+              >
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#1dc997]/20 flex items-center justify-center">
+                  <feature.icon className="w-6 h-6 text-[#1dc997]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
-            <div className="space-y-6">
-              {features.map((feature, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-start gap-4 p-4 rounded-xl bg-[#383745]/20 hover:bg-[#383745]/30 transition-colors"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div
-                    className="w-12 h-12 bg-[#1dc997]/20 rounded-lg flex items-center justify-center text-[#1dc997] flex-shrink-0"
-                    style={{
-                      boxShadow: "0 0 15px rgba(29, 201, 151, 0.3)",
-                    }}
-                  >
-                    {feature.icon}
+          {/* Luna AI Visualization */}
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: isMobile ? "-10px" : "-20px" }}
+            className="relative"
+          >
+            <div className="relative w-full h-96 rounded-3xl bg-gradient-to-br from-[#1dc997]/20 to-[#16a085]/20 border border-[#1dc997]/30 overflow-hidden">
+              {/* Luna AI Interface Mockup */}
+              <div className="absolute inset-4 bg-[#0a0a0a]/80 rounded-2xl border border-white/10 p-6">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-8 h-8 rounded-full bg-[#1dc997] flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-black" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold text-white mb-2">{feature.title}</h4>
-                    <p className="text-[#dcdbde]">{feature.description}</p>
+                    <h4 className="text-white font-semibold">Luna AI</h4>
+                    <p className="text-xs text-gray-400">Online agora</p>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
 
-            <motion.div
-              className="mt-8 p-6 rounded-xl border border-[#1dc997]/30 bg-gradient-to-r from-[#1dc997]/10 to-[#1dc997]/5"
-              style={{
-                boxShadow: "0 0 30px rgba(29, 201, 151, 0.2)",
-              }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <Clock className="w-6 h-6 text-[#1dc997]" />
-                <span className="text-[#1dc997] font-semibold text-lg">Operação 24/7</span>
+                <div className="space-y-4">
+                  <div className="bg-[#1dc997]/20 rounded-lg p-3 max-w-xs">
+                    <p className="text-sm text-white">Olá! Como posso ajudar sua empresa hoje?</p>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 max-w-xs ml-auto">
+                    <p className="text-sm text-white">Preciso de análise de dados de vendas</p>
+                  </div>
+                  <div className="bg-[#1dc997]/20 rounded-lg p-3 max-w-xs">
+                    <p className="text-sm text-white">Perfeito! Analisando seus dados... ✨</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-[#dcdbde]">
-                Luna nunca dorme. Trabalha incansavelmente para seu negócio, capturando leads e fechando vendas mesmo
-                quando você está offline.
-              </p>
-            </motion.div>
-          </motion.div>
 
-          {/* Use Cases */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-3xl font-bold text-white mb-8">
-              Perfeita para <span className="text-[#1dc997]">Diversos Segmentos</span>
-            </h3>
-
-            <div className="space-y-4 mb-8">
-              {useCases.map((useCase, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-[#383745]/20 to-[#383745]/10 hover:from-[#1dc997]/20 hover:to-[#1dc997]/10 transition-all duration-300"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ x: 10 }}
-                >
-                  <div
-                    className="w-2 h-2 bg-[#1dc997] rounded-full"
+              {/* Floating particles */}
+              <div className="absolute inset-0 overflow-hidden">
+                {[...Array(20)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 bg-[#1dc997] rounded-full"
+                    animate={{
+                      x: [0, Math.random() * 400],
+                      y: [0, Math.random() * 400],
+                      opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                      duration: 3 + Math.random() * 2,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: Math.random() * 2,
+                    }}
                     style={{
-                      boxShadow: "0 0 10px rgba(29, 201, 151, 0.8)",
+                      left: Math.random() * 100 + "%",
+                      top: Math.random() * 100 + "%",
                     }}
                   />
-                  <span className="text-white font-medium">{useCase}</span>
-                </motion.div>
-              ))}
+                ))}
+              </div>
             </div>
-
-            <motion.div
-              className="p-8 rounded-2xl border border-[#1dc997]/30 bg-gradient-to-br from-[#1dc997]/10 to-[#1dc997]/5 text-center"
-              style={{
-                boxShadow: "0 0 40px rgba(29, 201, 151, 0.2)",
-              }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-2xl font-bold text-[#1dc997] mb-4">Resultados Comprovados</h4>
-              <p className="text-[#dcdbde] mb-6">
-                Clientes que implementaram Luna relatam aumento médio de 300% na conversão de leads e redução de 80% no
-                tempo de atendimento.
-              </p>
-              <motion.button
-                onClick={handleLunaClick}
-                className="bg-[#1dc997] text-[#0a0a0a] px-8 py-3 rounded-lg font-bold hover:bg-[#1dc997]/90 transition-colors cursor-pointer"
-                style={{
-                  boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",
-                }}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 30px rgba(29, 201, 151, 0.6)",
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Conhecer Luna AI
-              </motion.button>
-            </motion.div>
           </motion.div>
         </div>
+
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: isMobile ? "-10px" : "-20px" }}
+          className="text-center mt-16"
+        >
+          <Button
+            size="lg"
+            className="bg-[#1dc997] hover:bg-[#16a085] text-black font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#1dc997]/25"
+            onClick={() =>
+              window.open(
+                "http://wa.me/556136861323?text=Olá! Gostaria de conhecer mais sobre a Luna AI e suas funcionalidades.",
+                "_blank",
+              )
+            }
+          >
+            Conhecer Luna AI
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </motion.div>
       </div>
     </section>
   )

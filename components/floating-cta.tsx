@@ -1,112 +1,87 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
 import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, X } from "lucide-react"
 import { useMobile } from "@/hooks/use-mobile"
 
 export default function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
-  const { isMobile } = useMobile()
+  const isMobile = useMobile()
 
   useEffect(() => {
-    let ticking = false
-
     const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setIsVisible(window.scrollY > 100)
-          ticking = false
-        })
-        ticking = true
-      }
+      const scrolled = window.scrollY > 500
+      setIsVisible(scrolled)
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const handleWhatsAppClick = () => {
-    window.open("http://wa.me/556136861323?text=Olá! Quero transformar meu negócio com a AIM3!", "_blank")
+    window.open(
+      "http://wa.me/556136861323?text=Olá! Vim do site da AIM3 e gostaria de saber mais sobre como vocês podem transformar meu negócio com IA.",
+      "_blank",
+    )
   }
-
-  if (!isMobile) return null
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-6 right-6 z-50"
-          initial={{ opacity: 0, scale: 0, y: 100 }}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0, y: 100 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          className="fixed bottom-6 right-6 z-50"
         >
-          {/* Expanded State */}
           <AnimatePresence>
             {isExpanded && (
               <motion.div
-                className="absolute bottom-16 right-0 w-80 p-4 bg-[#0a0a0a] rounded-2xl border border-[#1dc997]/30 shadow-2xl"
-                style={{
-                  boxShadow: "0 0 30px rgba(29, 201, 151, 0.2)",
-                }}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                transition={{ duration: 0.15 }}
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                className="absolute bottom-16 right-0 mb-4 p-4 bg-[#1a1a1a] rounded-2xl border border-[#1dc997]/30 shadow-xl max-w-xs"
               >
-                <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-white font-bold text-lg">Fale Conosco!</h3>
+                <button
+                  onClick={() => setIsExpanded(false)}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <div className="pr-6">
+                  <h4 className="text-white font-semibold mb-2">Transforme seu negócio com IA!</h4>
+                  <p className="text-gray-300 text-sm mb-3">
+                    Fale conosco e descubra como a AIM3 pode revolucionar seus resultados.
+                  </p>
                   <button
-                    onClick={() => setIsExpanded(false)}
-                    className="text-[#dcdbde] hover:text-white transition-colors"
+                    onClick={handleWhatsAppClick}
+                    className="w-full bg-[#1dc997] hover:bg-[#16a085] text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
                   >
-                    <X className="w-5 h-5" />
+                    Falar no WhatsApp
                   </button>
                 </div>
-                <p className="text-[#dcdbde] text-sm mb-4">
-                  Pronto para transformar seu negócio? Nossa equipe está online agora!
-                </p>
-                <button
-                  onClick={handleWhatsAppClick}
-                  className="w-full bg-[#1dc997] text-[#0a0a0a] py-3 rounded-xl font-bold text-sm hover:bg-[#1dc997]/90 transition-colors"
-                  style={{
-                    boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",
-                  }}
-                >
-                  Iniciar Conversa no WhatsApp
-                </button>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Main Button */}
-          <button
-            className="w-16 h-16 bg-[#1dc997] rounded-full flex items-center justify-center text-[#0a0a0a] shadow-lg"
-            style={{
-              boxShadow: "0 0 25px rgba(29, 201, 151, 0.5)",
-            }}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => setIsExpanded(!isExpanded)}
+            className="relative w-14 h-14 bg-[#1dc997] hover:bg-[#16a085] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
           >
-            {isExpanded ? <X className="w-7 h-7" /> : <MessageCircle className="w-7 h-7" />}
-          </button>
+            <MessageCircle className="w-6 h-6 text-black" />
 
-          {/* Pulse Animation */}
-          {!isExpanded && (
-            <motion.div
-              className="absolute inset-0 bg-[#1dc997] rounded-full -z-10"
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.7, 0, 0.7],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "easeInOut",
-              }}
-            />
-          )}
+            {/* Pulse animation */}
+            <div className="absolute inset-0 rounded-full bg-[#1dc997] animate-ping opacity-20" />
+
+            {/* Notification dot */}
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">1</span>
+            </div>
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>

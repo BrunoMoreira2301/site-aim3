@@ -2,219 +2,151 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Menu, X, Sparkles } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
-import { Menu, X, ArrowRight } from "lucide-react"
 import { useMobile } from "@/hooks/use-mobile"
 
 export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { isMobile } = useMobile()
+  const isMobile = useMobile()
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
-
-    // Throttle scroll events on mobile
-    if (isMobile) {
-      let ticking = false
-      const throttledScroll = () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            handleScroll()
-            ticking = false
-          })
-          ticking = true
-        }
-      }
-      window.addEventListener("scroll", throttledScroll, { passive: true })
-      return () => window.removeEventListener("scroll", throttledScroll)
-    } else {
-      window.addEventListener("scroll", handleScroll, { passive: true })
-      return () => window.removeEventListener("scroll", handleScroll)
-    }
-  }, [isMobile])
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const menuItems = [
-    { label: "Sobre", href: "#sobre" },
-    { label: "Soluções", href: "#solucoes" },
-    { label: "IA & Sistemas", href: "#ia-sistemas" },
-    { label: "Metodologia", href: "#metodologia" },
-    { label: "Contato", href: "#contato" },
+    { name: "Início", href: "#inicio" },
+    { name: "Sobre", href: "#sobre" },
+    { name: "Soluções", href: "#solucoes" },
+    { name: "IA Systems", href: "#ia-systems" },
+    { name: "Luna AI", href: "#luna" },
+    { name: "Metodologia", href: "#metodologia" },
+    { name: "Contato", href: "#contato" },
   ]
 
-  const handleCTAClick = () => {
-    window.open("http://wa.me/556136861323?text=Olá! Quero impulsionar meu negócio com a AIM3!", "_blank")
-  }
-
-  // Mobile-optimized animations
-  const mobileVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0 },
-  }
-
-  const desktopVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: { opacity: 1, y: 0 },
+  const headerVariants = {
+    hidden: { y: -100, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: isMobile ? 0.6 : 0.8,
+        ease: "easeOut",
+      },
+    },
   }
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-[#0a0a0a]/95 backdrop-blur-sm border-b border-[#383745]/30" : "bg-transparent"
-      }`}
+      variants={headerVariants}
       initial="hidden"
       animate="visible"
-      variants={isMobile ? mobileVariants : desktopVariants}
-      transition={{ duration: isMobile ? 0.3 : 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/10" : "bg-transparent"
+      }`}
     >
-      <div className="container mx-auto px-4 py-3 md:py-4">
-        <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <div className="relative w-28 md:w-32 h-7 md:h-8">
-              <Image
-                src="/images/logo-aim3.png"
-                alt="AIM3 Logo"
-                fill
-                className="object-contain brightness-110"
-                style={{
-                  filter: "drop-shadow(0 0 10px rgba(29, 201, 151, 0.3))",
-                }}
-                priority
-              />
+          <motion.div whileHover={{ scale: 1.05 }} className="flex items-center space-x-3">
+            <div className="relative w-12 h-12">
+              <Image src="/images/logo-aim3.png" alt="AIM3 Logo" fill className="object-contain" />
             </div>
-          </Link>
+            <span className="text-2xl font-bold text-white">AIM3</span>
+          </motion.div>
 
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {menuItems.map((item, index) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {menuItems.map((item) => (
+              <motion.a
+                key={item.name}
+                href={item.href}
+                whileHover={{ scale: 1.05 }}
+                className="text-gray-300 hover:text-[#1dc997] transition-colors duration-300 font-medium"
               >
-                <Link
-                  href={item.href}
-                  className="relative px-4 py-2 text-[#dcdbde] hover:text-[#1dc997] transition-colors duration-300 font-medium group"
-                >
-                  {item.label}
-                  <motion.div
-                    className="absolute bottom-0 left-0 w-full h-0.5 bg-[#1dc997] origin-left"
-                    initial={{ scaleX: 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </Link>
-              </motion.div>
+                {item.name}
+              </motion.a>
             ))}
           </nav>
 
-          {/* CTA Button Desktop */}
-          <motion.button
-            onClick={handleCTAClick}
-            className="hidden md:flex items-center gap-3 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-6 py-3 rounded-xl font-semibold hover:from-[#16a085] hover:to-[#1dc997] transition-all duration-300 group cursor-pointer"
-            style={{
-              boxShadow: "0 0 20px rgba(29, 201, 151, 0.4)",
-            }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 30px rgba(29, 201, 151, 0.6)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            Quero Impulsionar Meu Negócio
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
+          {/* Desktop CTA Button */}
+          <div className="hidden lg:block">
+            <Button
+              className="bg-[#1dc997] hover:bg-[#16a085] text-black font-semibold px-6 py-2 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#1dc997]/25"
+              onClick={() =>
+                window.open(
+                  "http://wa.me/556136861323?text=Olá! Gostaria de falar com um especialista em IA da AIM3.",
+                  "_blank",
+                )
+              }
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Fale Conosco
+            </Button>
+          </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-[#383745]/30 border border-[#1dc997]/30 text-[#dcdbde] hover:text-[#1dc997] hover:bg-[#1dc997]/10 transition-all duration-200"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <AnimatePresence mode="wait">
-              {isMobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <X size={20} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <Menu size={20} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <button className="lg:hidden text-white p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              className="md:hidden fixed inset-0 top-0 bg-[#0a0a0a] z-40"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="flex flex-col items-center justify-center min-h-screen p-8">
-                <nav className="flex flex-col items-center space-y-6">
-                  {menuItems.map((item, index) => (
-                    <motion.div
-                      key={item.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2, delay: index * 0.05 }}
-                    >
-                      <Link
-                        href={item.href}
-                        className="text-xl font-semibold text-[#dcdbde] hover:text-[#1dc997] transition-colors duration-200"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    </motion.div>
-                  ))}
-
-                  <motion.button
-                    onClick={() => {
-                      handleCTAClick()
-                      setIsMobileMenuOpen(false)
-                    }}
-                    className="mt-8 bg-gradient-to-r from-[#1dc997] to-[#16a085] text-[#0a0a0a] px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3 cursor-pointer"
-                    style={{
-                      boxShadow: "0 0 30px rgba(29, 201, 151, 0.4)",
-                    }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, delay: 0.3 }}
-                  >
-                    Quero Impulsionar Meu Negócio
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.button>
-                </nav>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden bg-[#0a0a0a]/98 backdrop-blur-md border-t border-white/10"
+          >
+            <div className="container mx-auto px-4 py-6">
+              <nav className="flex flex-col space-y-4">
+                {menuItems.map((item, index) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="text-gray-300 hover:text-[#1dc997] transition-colors duration-300 font-medium py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </motion.a>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: menuItems.length * 0.1 }}
+                  className="pt-4"
+                >
+                  <Button
+                    className="w-full bg-[#1dc997] hover:bg-[#16a085] text-black font-semibold py-3 rounded-full"
+                    onClick={() => {
+                      window.open(
+                        "http://wa.me/556136861323?text=Olá! Gostaria de falar com um especialista em IA da AIM3.",
+                        "_blank",
+                      )
+                      setIsMenuOpen(false)
+                    }}
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Fale Conosco
+                  </Button>
+                </motion.div>
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   )
 }
