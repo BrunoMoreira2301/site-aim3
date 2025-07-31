@@ -7,18 +7,22 @@ import { Star } from "lucide-react"
 
 const testimonials = [
   {
+    id: 1,
     name: "Erick Borges Brito",
     text: "Trabalhar com a AIM3 foi surpreendente. Trouxeram inovação, carisma e ferramentas que mudaram nosso jogo.",
   },
   {
+    id: 2,
     name: "Thiago Gomes",
     text: "Com a estratégia da AIM3, aumentamos nosso faturamento em 36% em apenas um mês. Simplesmente incrível.",
   },
   {
+    id: 3,
     name: "Rômulo Vitelli",
     text: "Parceria produtiva e resultados imediatos. Aplicaram o que prometeram e fomos além das metas.",
   },
   {
+    id: 4,
     name: "Guilherme Nunes",
     text: "Organização, clareza e visão estratégica. A AIM3 entrega além do esperado.",
   },
@@ -46,14 +50,11 @@ export default function TestimonialsSection() {
     return () => clearInterval(interval)
   }, [isHovered])
 
-  const cardSize = isMobile
-    ? { width: "w-72", padding: "p-6", textSize: "text-base" }
-    : isTablet
-      ? { width: "w-80", padding: "p-7", textSize: "text-lg" }
-      : { width: "w-80", padding: "p-8", textSize: "text-lg" }
+  const cardSize = isMobile ? "w-72 p-6" : isTablet ? "w-80 p-7" : "w-80 p-8"
 
+  const textSize = isMobile ? "text-base" : "text-lg"
   const starSize = isMobile ? "w-4 h-4" : "w-5 h-5"
-  const spacing = isMobile ? "space-x-4" : "space-x-8"
+  const spacing = isMobile ? "space-x-4" : "space-x-6"
   const gradientWidth = isMobile ? "w-8" : "w-16"
 
   return (
@@ -98,21 +99,21 @@ export default function TestimonialsSection() {
               {/* Duplicate testimonials for infinite scroll */}
               {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <motion.div
-                  key={index}
-                  className={`${cardSize.width} ${cardSize.padding} bg-[#1a1a1a] rounded-xl border border-gray-800/50 shadow-lg flex-shrink-0 hover:border-[#1dc997]/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(29,201,151,0.1)]`}
-                  whileHover={{ y: -5 }}
+                  key={`${testimonial.id}-${index}`}
+                  whileHover={isMobile ? {} : { y: -5 }}
+                  className={`${cardSize} bg-[#1a1a1a] rounded-xl border border-white/10 flex-shrink-0 group cursor-pointer transition-all duration-300 hover:border-[#1dc997]/30 hover:shadow-lg hover:shadow-[#1dc997]/10`}
                 >
                   {/* Stars */}
-                  <div className="flex items-center gap-1 mb-6">
+                  <div className="flex space-x-1 mb-4 md:mb-6">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className={`${starSize} fill-[#1dc997] text-[#1dc997]`} />
                     ))}
                   </div>
 
                   {/* Testimonial text */}
-                  <p className={`${cardSize.textSize} text-[#dcdbde] italic mb-6 leading-relaxed`}>
+                  <blockquote className={`${textSize} text-[#dcdbde] italic mb-4 md:mb-6 leading-relaxed`}>
                     "{testimonial.text}"
-                  </p>
+                  </blockquote>
 
                   {/* Client name */}
                   <div className="text-right">
@@ -124,6 +125,16 @@ export default function TestimonialsSection() {
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   )
 }

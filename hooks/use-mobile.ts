@@ -15,13 +15,14 @@ export function useMobile() {
 
     checkDevice()
     window.addEventListener("resize", checkDevice)
+
     return () => window.removeEventListener("resize", checkDevice)
   }, [])
 
-  return { isMobile, isTablet, isDesktop: !isMobile && !isTablet }
+  return { isMobile, isTablet }
 }
 
-// Export adicional para compatibilidade
+// Exportação adicional para compatibilidade
 export function useIsMobile() {
   const { isMobile } = useMobile()
   return isMobile

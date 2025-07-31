@@ -99,23 +99,36 @@ export default function ClientsSection() {
                   key={index}
                   className={`${logoSize.container} flex items-center justify-center flex-shrink-0 group cursor-pointer`}
                 >
-                  <Image
-                    src={logo || "/placeholder.svg"}
-                    alt={`Cliente ${(index % logos.length) + 1}`}
-                    width={logoSize.width}
-                    height={logoSize.height}
-                    className={`${logoSize.maxHeight} w-auto object-contain filter grayscale hover:grayscale-0 transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(29,201,151,0.5)]`}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = "/placeholder.svg?height=60&width=120&text=Logo"
-                    }}
-                  />
+                  <div className="w-full h-full flex items-center justify-center bg-white/5 rounded-lg border border-white/10 transition-all duration-300 group-hover:bg-white/10 group-hover:border-[#1dc997]/30 group-hover:shadow-lg group-hover:shadow-[#1dc997]/20">
+                    <Image
+                      src={logo || "/placeholder.svg"}
+                      alt={`Cliente ${(index % logos.length) + 1}`}
+                      width={logoSize.width}
+                      height={logoSize.height}
+                      className={`${logoSize.maxHeight} w-auto object-contain transition-all duration-300 group-hover:scale-105`}
+                      style={{ filter: "none" }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.src = "/placeholder.svg?height=60&width=120&text=Logo"
+                      }}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   )
 }
