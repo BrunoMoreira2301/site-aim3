@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useMobile } from "@/hooks/use-mobile"
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Star } from "lucide-react"
+import { useMobile } from "@/hooks/use-mobile"
 
 const testimonials = [
   {
@@ -29,33 +29,45 @@ const testimonials = [
 ]
 
 export default function TestimonialsSection() {
-  const { isMobile, isTablet } = useMobile()
-  const [isHovered, setIsHovered] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const { isMobile, isTablet } = useMobile()
 
   useEffect(() => {
-    if (!scrollRef.current || isHovered) return
+    const scrollContainer = scrollRef.current
+    if (!scrollContainer) return
 
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollLeft += 1.5
+    let animationId: number
+    let scrollPosition = 0
 
-        // Reset scroll when reaching end
-        if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
-          scrollRef.current.scrollLeft = 0
+    const scroll = () => {
+      if (!isHovered) {
+        scrollPosition += 1.5
+        if (scrollPosition >= scrollContainer.scrollWidth / 2) {
+          scrollPosition = 0
         }
+        scrollContainer.scrollLeft = scrollPosition
       }
+      animationId = requestAnimationFrame(scroll)
+    }
+
+    const intervalId = setInterval(() => {
+      scroll()
     }, 25)
 
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(intervalId)
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
+    }
   }, [isHovered])
 
-  const cardSize = isMobile ? "w-72 p-6" : isTablet ? "w-80 p-7" : "w-80 p-8"
-
+  const cardWidth = isMobile ? "w-72" : "w-80"
+  const cardPadding = isMobile ? "p-6" : isTablet ? "p-7" : "p-8"
   const textSize = isMobile ? "text-base" : "text-lg"
   const starSize = isMobile ? "w-4 h-4" : "w-5 h-5"
   const spacing = isMobile ? "space-x-4" : "space-x-6"
-  const gradientWidth = isMobile ? "w-8" : "w-16"
 
   return (
     <section className="relative bg-[#0a0a0a] py-16 md:py-20 overflow-hidden">
@@ -73,49 +85,65 @@ export default function TestimonialsSection() {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="relative"
-          onMouseEnter={() => !isMobile && setIsHovered(true)}
-          onMouseLeave={() => !isMobile && setIsHovered(false)}
-        >
-          {/* Gradient overlays */}
-          <div
-            className={`absolute left-0 top-0 ${gradientWidth} md:w-16 h-full bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none`}
-          />
-          <div
-            className={`absolute right-0 top-0 ${gradientWidth} md:w-16 h-full bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none`}
-          />
+        <div className="relative">
+          {/* Gradiente esquerdo */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
+
+          {/* Gradiente direito */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
 
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto scrollbar-hide scroll-smooth"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            className="flex overflow-x-hidden"
+            onMouseEnter={() => !isMobile && setIsHovered(true)}
+            onMouseLeave={() => !isMobile && setIsHovered(false)}
+            style={{ scrollBehavior: "auto" }}
           >
-            <div className={`flex ${spacing} md:space-x-8 min-w-max`}>
-              {/* Duplicate testimonials for infinite scroll */}
-              {[...testimonials, ...testimonials].map((testimonial, index) => (
+            {/* Primeira sequência */}
+            <div className={`flex ${spacing} flex-shrink-0`}>
+              {testimonials.map((testimonial) => (
                 <motion.div
-                  key={`${testimonial.id}-${index}`}
-                  whileHover={isMobile ? {} : { y: -5 }}
-                  className={`${cardSize} bg-[#1a1a1a] rounded-xl border border-white/10 flex-shrink-0 group cursor-pointer transition-all duration-300 hover:border-[#1dc997]/30 hover:shadow-lg hover:shadow-[#1dc997]/10`}
+                  key={`first-${testimonial.id}`}
+                  className={`${cardWidth} ${cardPadding} bg-[#1a1a1a] border border-white/10 rounded-xl shadow-lg hover:shadow-xl hover:shadow-[#1dc997]/10 transition-all duration-300 hover:border-[#1dc997]/30 flex-shrink-0`}
+                  whileHover={{ y: -5 }}
                 >
-                  {/* Stars */}
-                  <div className="flex space-x-1 mb-4 md:mb-6">
+                  {/* Estrelas */}
+                  <div className="flex justify-center mb-6">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`${starSize} fill-[#1dc997] text-[#1dc997]`} />
+                      <Star key={i} className={`${starSize} text-[#1dc997] fill-current`} />
                     ))}
                   </div>
 
-                  {/* Testimonial text */}
-                  <blockquote className={`${textSize} text-[#dcdbde] italic mb-4 md:mb-6 leading-relaxed`}>
-                    "{testimonial.text}"
-                  </blockquote>
+                  {/* Depoimento */}
+                  <p className={`${textSize} text-[#dcdbde] italic mb-6 leading-relaxed`}>"{testimonial.text}"</p>
 
-                  {/* Client name */}
+                  {/* Nome */}
+                  <div className="text-right">
+                    <p className="text-white font-semibold">— {testimonial.name}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Segunda sequência (duplicada para loop infinito) */}
+            <div className={`flex ${spacing} flex-shrink-0 ml-4 md:ml-6`}>
+              {testimonials.map((testimonial) => (
+                <motion.div
+                  key={`second-${testimonial.id}`}
+                  className={`${cardWidth} ${cardPadding} bg-[#1a1a1a] border border-white/10 rounded-xl shadow-lg hover:shadow-xl hover:shadow-[#1dc997]/10 transition-all duration-300 hover:border-[#1dc997]/30 flex-shrink-0`}
+                  whileHover={{ y: -5 }}
+                >
+                  {/* Estrelas */}
+                  <div className="flex justify-center mb-6">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className={`${starSize} text-[#1dc997] fill-current`} />
+                    ))}
+                  </div>
+
+                  {/* Depoimento */}
+                  <p className={`${textSize} text-[#dcdbde] italic mb-6 leading-relaxed`}>"{testimonial.text}"</p>
+
+                  {/* Nome */}
                   <div className="text-right">
                     <p className="text-white font-semibold">— {testimonial.name}</p>
                   </div>
@@ -123,18 +151,8 @@ export default function TestimonialsSection() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   )
 }
