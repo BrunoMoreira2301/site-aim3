@@ -22,7 +22,7 @@ export function useMobile() {
   return { isMobile, isTablet }
 }
 
-// Exportação adicional para compatibilidade
+// Export named function for compatibility
 export function useIsMobile() {
   const { isMobile } = useMobile()
   return isMobile

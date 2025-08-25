@@ -1,147 +1,129 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 import Image from "next/image"
 import { useMobile } from "@/hooks/use-mobile"
-
-const clientLogos = [
-  { src: "/images/clients/logo-1.png", alt: "Cliente 1" },
-  { src: "/images/clients/logo-2.png", alt: "Cliente 2" },
-  { src: "/images/clients/logo-3.png", alt: "Cliente 3" },
-  { src: "/images/clients/logo-4.png", alt: "Cliente 4" },
-  { src: "/images/clients/logo-5.png", alt: "Cliente 5" },
-  { src: "/images/clients/logo-6.png", alt: "Cliente 6" },
-  { src: "/images/clients/logo-7.png", alt: "Cliente 7" },
-  { src: "/images/clients/logo-8.png", alt: "Cliente 8" },
-  { src: "/images/clients/logo-9.png", alt: "Cliente 9" },
-  { src: "/images/clients/logo-10.png", alt: "Cliente 10" },
-  { src: "/images/clients/logo-11.png", alt: "Cliente 11" },
-  { src: "/images/clients/logo-12.png", alt: "Cliente 12" },
-  { src: "/images/clients/logo-13.png", alt: "Cliente 13" },
-  { src: "/images/clients/logo-14.png", alt: "Cliente 14" },
-  { src: "/images/clients/logo-15.png", alt: "Cliente 15" },
-]
 
 export default function ClientsSection() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
-  const { isMobile, isTablet } = useMobile()
+  const { isMobile } = useMobile()
+
+  const logos = [
+    { src: "/images/clients/logo-1.png", alt: "Cliente 1" },
+    { src: "/images/clients/logo-2.png", alt: "Cliente 2" },
+    { src: "/images/clients/logo-3.png", alt: "Cliente 3" },
+    { src: "/images/clients/logo-4.png", alt: "Cliente 4" },
+    { src: "/images/clients/logo-5.png", alt: "Cliente 5" },
+    { src: "/images/clients/logo-6.png", alt: "Cliente 6" },
+    { src: "/images/clients/logo-7.png", alt: "Cliente 7" },
+    { src: "/images/clients/logo-8.png", alt: "Cliente 8" },
+    { src: "/images/clients/logo-9.png", alt: "Cliente 9" },
+    { src: "/images/clients/logo-10.png", alt: "Cliente 10" },
+    { src: "/images/clients/logo-11.png", alt: "Cliente 11" },
+    { src: "/images/clients/logo-12.png", alt: "Cliente 12" },
+    { src: "/images/clients/logo-13.png", alt: "Cliente 13" },
+    { src: "/images/clients/logo-14.png", alt: "Cliente 14" },
+    { src: "/images/clients/logo-15.png", alt: "Cliente 15" },
+  ]
 
   useEffect(() => {
     const scrollContainer = scrollRef.current
-    if (!scrollContainer) return
+    if (!scrollContainer || isHovered) return
 
-    let animationId: number
-    let scrollPosition = 0
-
-    const scroll = () => {
-      if (!isHovered) {
-        scrollPosition += 1
-        if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-          scrollPosition = 0
-        }
-        scrollContainer.scrollLeft = scrollPosition
+    const scrollInterval = setInterval(() => {
+      if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
+        scrollContainer.scrollLeft = 0
+      } else {
+        scrollContainer.scrollLeft += 0.5
       }
-      animationId = requestAnimationFrame(scroll)
-    }
+    }, 80)
 
-    const intervalId = setInterval(() => {
-      scroll()
-    }, 30)
-
-    return () => {
-      clearInterval(intervalId)
-      if (animationId) {
-        cancelAnimationFrame(animationId)
-      }
-    }
+    return () => clearInterval(scrollInterval)
   }, [isHovered])
 
-  const logoSize = isMobile
-    ? { width: 120, height: 60 }
-    : isTablet
-      ? { width: 150, height: 75 }
-      : { width: 180, height: 90 }
-  const containerClass = isMobile ? "w-32 h-16" : isTablet ? "w-40 h-20" : "w-48 h-24"
-  const maxHeight = isMobile ? "max-h-[50px]" : isTablet ? "max-h-[70px]" : "max-h-[90px]"
-  const spacing = isMobile ? "space-x-4" : "space-x-8"
-
   return (
-    <section className="relative bg-[#0a0a0a] py-16 md:py-20 overflow-hidden">
+    <section className="py-16 md:py-20 bg-[#0a0a0a] relative overflow-hidden">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">Empresas que confiam na AIM3</h2>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">Empresas que confiam na AIM3</h2>
           <p className="text-lg md:text-xl text-[#dcdbde] max-w-2xl mx-auto">
             Resultados reais, entregues para marcas de diversos setores
           </p>
         </motion.div>
 
         <div className="relative">
-          {/* Gradiente esquerdo */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
+          {/* Gradientes nas bordas */}
+          <div className="absolute left-0 top-0 w-12 md:w-20 h-full bg-gradient-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-12 md:w-20 h-full bg-gradient-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
 
-          {/* Gradiente direito */}
-          <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
-
+          {/* Container do scroll */}
           <div
             ref={scrollRef}
-            className="flex overflow-x-hidden"
+            className="flex space-x-6 md:space-x-10 overflow-x-auto scrollbar-hide py-8"
+            style={{ scrollBehavior: "smooth" }}
             onMouseEnter={() => !isMobile && setIsHovered(true)}
             onMouseLeave={() => !isMobile && setIsHovered(false)}
-            style={{ scrollBehavior: "auto" }}
           >
             {/* Primeira sequência */}
-            <div className={`flex ${spacing} flex-shrink-0`}>
-              {clientLogos.map((logo, index) => (
-                <div
-                  key={`first-${index}`}
-                  className={`${containerClass} flex items-center justify-center group relative bg-white/5 border border-white/10 rounded-lg p-4 transition-all duration-300 hover:border-[#1dc997]/50 hover:shadow-lg hover:shadow-[#1dc997]/20 hover:scale-105`}
-                >
-                  <Image
-                    src={logo.src || "/placeholder.svg"}
-                    alt={logo.alt}
-                    width={logoSize.width}
-                    height={logoSize.height}
-                    className={`object-contain ${maxHeight} w-auto transition-all duration-300`}
-                    style={{ filter: "none" }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = "/placeholder.svg?height=60&width=120&text=Logo"
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
+            {logos.map((logo, index) => (
+              <motion.div
+                key={`first-${index}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="group flex-shrink-0 w-32 md:w-40 lg:w-48 h-16 md:h-20 lg:h-24 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg hover:border-[#1dc997]/50 hover:shadow-lg hover:shadow-[#1dc997]/20 transition-all duration-300"
+              >
+                <Image
+                  src={logo.src || "/placeholder.svg"}
+                  alt={logo.alt}
+                  width={isMobile ? 120 : 180}
+                  height={isMobile ? 50 : 90}
+                  className="max-h-[50px] md:max-h-[70px] lg:max-h-[90px] w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                  style={{
+                    filter: "none",
+                    backgroundColor: "transparent",
+                  }}
+                  priority={index < 5}
+                  quality={90}
+                  unoptimized={false}
+                  onLoad={() => console.log(`Logo ${index + 1} carregada com sucesso`)}
+                  onError={() => {
+                    console.error(`Erro ao carregar logo ${index + 1}: ${logo.src}`)
+                  }}
+                />
+              </motion.div>
+            ))}
 
-            {/* Segunda sequência (duplicada para loop infinito) */}
-            <div className={`flex ${spacing} flex-shrink-0 ml-4 md:ml-8`}>
-              {clientLogos.map((logo, index) => (
-                <div
-                  key={`second-${index}`}
-                  className={`${containerClass} flex items-center justify-center group relative bg-white/5 border border-white/10 rounded-lg p-4 transition-all duration-300 hover:border-[#1dc997]/50 hover:shadow-lg hover:shadow-[#1dc997]/20 hover:scale-105`}
-                >
-                  <Image
-                    src={logo.src || "/placeholder.svg"}
-                    alt={logo.alt}
-                    width={logoSize.width}
-                    height={logoSize.height}
-                    className={`object-contain ${maxHeight} w-auto transition-all duration-300`}
-                    style={{ filter: "none" }}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement
-                      target.src = "/placeholder.svg?height=60&width=120&text=Logo"
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
+            {/* Segunda sequência para loop infinito */}
+            {logos.map((logo, index) => (
+              <motion.div
+                key={`second-${index}`}
+                className="group flex-shrink-0 w-32 md:w-40 lg:w-48 h-16 md:h-20 lg:h-24 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg hover:border-[#1dc997]/50 hover:shadow-lg hover:shadow-[#1dc997]/20 transition-all duration-300"
+              >
+                <Image
+                  src={logo.src || "/placeholder.svg"}
+                  alt={logo.alt}
+                  width={isMobile ? 120 : 180}
+                  height={isMobile ? 50 : 90}
+                  className="max-h-[50px] md:max-h-[70px] lg:max-h-[90px] w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                  style={{
+                    filter: "none",
+                    backgroundColor: "transparent",
+                  }}
+                  quality={90}
+                  unoptimized={false}
+                />
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

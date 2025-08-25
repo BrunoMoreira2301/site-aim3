@@ -1,18 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import StructuredData from "@/components/structured-data"
 import Script from "next/script"
+import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "AIM3 - Aceleradores de Negócios | Marketing Digital & IA",
+  title: "AIM3 - Transformação Digital com IA",
   description:
-    "Mais que uma agência, somos aceleradores de negócios. Transformamos ideias em resultados através de tecnologia, estratégia e inteligência artificial.",
-  keywords: ["marketing digital", "inteligência artificial", "automação", "chatbots", "desenvolvimento web", "AIM3"],
+    "Plataforma de IA empresarial com conversas LLM, agentes personalizáveis, base de conhecimento segura e suporte a servidor MCP.",
+  keywords: "IA, inteligência artificial, transformação digital, automação, chatbots, AIM3",
   authors: [{ name: "AIM3" }],
   creator: "AIM3",
   publisher: "AIM3",
@@ -26,17 +24,17 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "AIM3 - Aceleradores de Negócios | Marketing Digital & IA",
+    title: "AIM3 - Transformação Digital com IA",
     description:
-      "Mais que uma agência, somos aceleradores de negócios. Transformamos ideias em resultados através de tecnologia, estratégia e inteligência artificial.",
+      "Plataforma de IA empresarial com conversas LLM, agentes personalizáveis, base de conhecimento segura e suporte a servidor MCP.",
     url: "https://aim3.com.br",
     siteName: "AIM3",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "/images/logo-aim3.png",
         width: 1200,
         height: 630,
-        alt: "AIM3 - Aceleradores de Negócios",
+        alt: "AIM3 - Transformação Digital com IA",
       },
     ],
     locale: "pt_BR",
@@ -44,10 +42,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AIM3 - Aceleradores de Negócios | Marketing Digital & IA",
+    title: "AIM3 - Transformação Digital com IA",
     description:
-      "Mais que uma agência, somos aceleradores de negócios. Transformamos ideias em resultados através de tecnologia, estratégia e inteligência artificial.",
-    images: ["/images/og-image.jpg"],
+      "Plataforma de IA empresarial com conversas LLM, agentes personalizáveis, base de conhecimento segura e suporte a servidor MCP.",
+    images: ["/images/logo-aim3.png"],
   },
   robots: {
     index: true,
@@ -67,15 +65,13 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#1dc997" }],
+    other: [
+      { rel: "icon", url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", url: "/favicon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
   manifest: "/site.webmanifest",
   themeColor: "#1dc997",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
     generator: 'v0.app'
 }
 
@@ -87,12 +83,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <meta name="msapplication-TileColor" content="#1dc997" />
-        <meta name="theme-color" content="#1dc997" />
-      </head>
-      <body className={inter.className}>
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-RHTC3585MQ" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -103,12 +93,8 @@ export default function RootLayout({
             gtag('config', 'G-RHTC3585MQ');
           `}
         </Script>
-
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <StructuredData />
-          {children}
-        </ThemeProvider>
-      </body>
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   )
 }

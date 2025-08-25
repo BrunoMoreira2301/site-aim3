@@ -2,30 +2,30 @@ export default function StructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "Enterprise AI Platform",
+    name: "AIM3 - Enterprise AI Platform",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     offers: {
       "@type": "Offer",
       price: "0",
-      priceCurrency: "USD",
+      priceCurrency: "BRL",
       availability: "https://schema.org/InStock",
       priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split("T")[0],
     },
     description:
-      "Enterprise-grade AI platform with LLM conversations, customizable agents, secure knowledge base, and MCP server support.",
+      "Plataforma de IA empresarial com conversas LLM, agentes personalizáveis, base de conhecimento segura e suporte a servidor MCP.",
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "4.8",
       ratingCount: "127",
     },
     featureList: [
-      "Advanced LLM Conversations",
-      "Customizable Agents",
-      "Enterprise Knowledge Base",
-      "Prompt Templates",
-      "MCP Server Support",
-      "Enterprise Security",
+      "Conversas LLM Avançadas",
+      "Agentes Personalizáveis",
+      "Base de Conhecimento Empresarial",
+      "Templates de Prompt",
+      "Suporte a Servidor MCP",
+      "Segurança Empresarial",
     ],
   }
 
